@@ -5,7 +5,8 @@ using UnityEngine;
 /// <summary>
 /// Destroy the gameobject that pass the trigger
 /// </summary>
-public class ObjectDestroyer : MonoBehaviour {
+public class ObjectDestroyer : MonoBehaviour
+{
 
     private void OnTriggerEnter(Collider other)
     {

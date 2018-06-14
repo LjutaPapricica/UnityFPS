@@ -2,22 +2,26 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MissionScript : MonoBehaviour {
+public class MissionScript : MonoBehaviour
+{
 
-	public GameObject panelText;
-	public bool locked; 
+	public GameObject PanelText;
+	public bool Locked; 
 
 	// Use this for initialization
-	void Start () {
-		hideTextPanel ();
+	void Start ()
+    {
+		HideTextPanel ();
 	}
 
-	public void hideTextPanel () {
-		StartCoroutine (hidePanel ());
+	public void HideTextPanel ()
+    {
+		StartCoroutine (HidePanel ());
 	}
 
-	IEnumerator hidePanel(){
+	IEnumerator HidePanel()
+    {
 		yield return new WaitForSeconds (10f);
-		panelText.SetActive (false);
+		PanelText.SetActive (false);
 	}
 }

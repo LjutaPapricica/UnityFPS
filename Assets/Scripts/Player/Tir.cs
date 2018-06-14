@@ -2,59 +2,77 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Tir : MonoBehaviour {
+public class Tir : MonoBehaviour
+{
 
-	public AudioClip soundShoot;
-	public AudioClip soundReload;
-	public AudioClip soundEmpty;
-	private Ray ray;
-	private RaycastHit hit;
-	public GameObject bulletHolePrefab;
-	public GameObject sparksPrefab;
-	public float fireRate = 1;
-	private float nextFire;
-	public int rounds, max_rounds;
-	public int magazines;
-	public bool isAuto = true, canFire = false;
-	private GameObject PanelUI;
-	public int weaponDamages;
-	public int maxMags;
+	public AudioClip SoundShoot;
+	public AudioClip SoundReload;
+	public AudioClip SoundEmpty;
+	public GameObject BulletHolePrefab;
+	public GameObject SparksPrefab;
+	public float FireRate = 1;
+    public int Rounds;
+    public int MaxRounds;
+	public int Magazines;
+    public bool IsAuto = true;
+    public bool CanFire = false;
+	public int WeaponDamages;
+	public int MaxMags;
+
+    private Ray ray;
+    private RaycastHit hit;
+    private float nextFire;
+    private GameObject panelUI;
 
 
-	//For animation script
-	public float getNextFire(){
+    //For animation script
+    public float GetNextFire()
+    {
 		return this.nextFire;
 	}
 
 	// Use this for initialization
-	void Start () {
-		PanelUI = GameObject.Find ("PanelUI");
-		Debug.Log (PanelUI);
-		PanelUI.GetComponent<UIScript> ().UpdateTxtAmmunition (rounds, max_rounds, magazines);
+	void Start ()
+    {
+		panelUI = GameObject.Find ("PanelUI");
+
+		Debug.Log (panelUI);
+
+		panelUI.GetComponent<UIScript> ().UpdateTxtAmmunition (Rounds, MaxRounds, Magazines);
 	}
 
-	void OnEnable(){
-		PanelUI.GetComponent<UIScript> ().UpdateTxtAmmunition (rounds, max_rounds, magazines);
+	void OnEnable()
+    {
+		panelUI.GetComponent<UIScript> ().UpdateTxtAmmunition (Rounds, MaxRounds, Magazines);
 	}
 
-	void Update () {
+	void Update ()
+    {
 
-		if (Time.time > nextFire) {
-			canFire = true;
-		} else {
-			canFire = false;
+		if (Time.time > nextFire)
+        {
+			CanFire = true;
+		}
+        else
+        {
+			CanFire = false;
 		}
 
-		if (isAuto) {
+		if (IsAuto)
+        {
 
-			if (Input.GetButton ("Fire1")) {
-				fire ();
+			if (Input.GetButton ("Fire1"))
+            {
+				Fire ();
 			}
 
-		} else {
+		}
+        else
+        {
 
-			if (Input.GetButtonDown ("Fire1")) {
-				fire ();
+			if (Input.GetButtonDown ("Fire1"))
+            {
+				Fire ();
 			}
 
 
@@ -62,56 +80,65 @@ public class Tir : MonoBehaviour {
 
 
 
-		if (Input.GetButtonDown ("Fire1") && rounds == 0) {
-			GetComponent<AudioSource> ().PlayOneShot (soundEmpty);
+		if (Input.GetButtonDown ("Fire1") && Rounds == 0)
+        {
+			GetComponent<AudioSource> ().PlayOneShot (SoundEmpty);
 		}
 
-		if (Input.GetKeyDown (KeyCode.R) && magazines > 0 && rounds < max_rounds) {
-
-			GetComponent<AudioSource> ().PlayOneShot (soundReload);
+		if (Input.GetKeyDown (KeyCode.R) && Magazines > 0 && Rounds < MaxRounds)
+        {
+			GetComponent<AudioSource> ().PlayOneShot (SoundReload);
 			StartCoroutine (Reload ());
-
 		}
 	}
 
-	IEnumerator Reload(){
+	IEnumerator Reload()
+    {
 		yield return new WaitForSeconds (0.2f);
-		magazines -= 1;
-		rounds = max_rounds;
-		PanelUI.GetComponent<UIScript> ().UpdateTxtAmmunition (rounds, max_rounds, magazines);
+		Magazines -= 1;
+		Rounds = MaxRounds;
+		panelUI.GetComponent<UIScript> ().UpdateTxtAmmunition (Rounds, MaxRounds, Magazines);
 	}
 
-	void fire(){
-		if (canFire) { //Fire rate
-			if (rounds > 0) {
+	void Fire()
+    {
+		if (CanFire)
+        { //Fire rate
+			if (Rounds > 0)
+            {
 
-				rounds--;
-				PanelUI.GetComponent<UIScript> ().UpdateTxtAmmunition (rounds, max_rounds, magazines);
-				nextFire = Time.time + fireRate;
-				GetComponent<AudioSource> ().PlayOneShot (soundShoot);
+				Rounds--;
+				panelUI.GetComponent<UIScript> ().UpdateTxtAmmunition (Rounds, MaxRounds, Magazines);
+				nextFire = Time.time + FireRate;
+				GetComponent<AudioSource> ().PlayOneShot (SoundShoot);
 
 				//Get screen center as raycast target
 				Vector2 screenCenterPoint = new Vector2 (Screen.width / 2, Screen.height / 2);
 				ray = Camera.main.ScreenPointToRay (screenCenterPoint);
-				if (Physics.Raycast (ray, out hit, Camera.main.farClipPlane)) {
-					if (hit.transform.gameObject.tag == "target") {
+				if (Physics.Raycast (ray, out hit, Camera.main.farClipPlane))
+                {
+					if (hit.transform.gameObject.tag == "target")
+                    {
 						Destroy (hit.transform.gameObject);
 					}
-					if (hit.transform.gameObject.tag == "ennemy") {
-						if (!hit.transform.gameObject.GetComponent<DeathScript> ().isDying ()) {
-							hit.transform.gameObject.GetComponent<DeathScript> ().death (weaponDamages);
+					if (hit.transform.gameObject.tag == "ennemy")
+                    {
+						if (!hit.transform.gameObject.GetComponent<DeathScript> ().IsDying ())
+                        {
+							hit.transform.gameObject.GetComponent<DeathScript> ().Death (WeaponDamages);
 						}
 
 					}
-					if (hit.transform.gameObject.tag == "decors") {
+					if (hit.transform.gameObject.tag == "decors")
+                    {
 
 						//Bullet hole
 						GameObject Impact;
-						Impact = Instantiate (bulletHolePrefab, hit.point, Quaternion.FromToRotation(Vector3.forward, hit.normal)) as GameObject;
+						Impact = Instantiate (BulletHolePrefab, hit.point, Quaternion.FromToRotation(Vector3.forward, hit.normal)) as GameObject;
 						Destroy (Impact, 20f);
 
 						//Sparks
-						GameObject Sparks = Instantiate(sparksPrefab, hit.point, Quaternion.FromToRotation(Vector3.forward, hit.normal)) as GameObject;
+						GameObject Sparks = Instantiate(SparksPrefab, hit.point, Quaternion.FromToRotation(Vector3.forward, hit.normal)) as GameObject;
 						Destroy (Sparks, 3f);
 					}
 				}
@@ -119,8 +146,9 @@ public class Tir : MonoBehaviour {
 		}
 	}
 
-	public void AddMagazines(int nbMags){
-		magazines = Mathf.Min(nbMags + magazines, maxMags);
-		PanelUI.GetComponent<UIScript> ().UpdateTxtAmmunition (rounds, max_rounds, magazines);
+	public void AddMagazines(int nbMags)
+    {
+		Magazines = Mathf.Min(nbMags + Magazines, MaxMags);
+		panelUI.GetComponent<UIScript> ().UpdateTxtAmmunition (Rounds, MaxRounds, Magazines);
 	}
 }

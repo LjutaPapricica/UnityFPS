@@ -4,53 +4,62 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public class HealthScript : MonoBehaviour {
+public class HealthScript : MonoBehaviour
+{
 
-	public int hp = 100;
-	public AudioClip deathSound;
+	public int Hp = 100;
+	public AudioClip DeathSound;
+
 	private bool alive = true;
 
 	// Use this for initialization
-	void Start () {
-		GameObject.Find ("PanelUI").GetComponent<UIScript> ().UpdateLife (hp);
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
+	void Start ()
+    {
+		GameObject.Find ("PanelUI").GetComponent<UIScript> ().UpdateLife (Hp);
 	}
 
-	public void damagePlayer(int damages){
-		hp -= damages;
-		GameObject.Find ("PanelUI").GetComponent<UIScript> ().UpdateLife (hp);
+	public void DamagePlayer(int damages)
+    {
+		Hp -= damages;
+		GameObject.Find ("PanelUI").GetComponent<UIScript> ().UpdateLife (Hp);
 
-		if (hp <= 0 && alive) {
+		if (Hp <= 0 && alive)
+        {
 			alive = false;
-			GetComponent<AudioSource> ().PlayOneShot (deathSound);
-			transform.Find("FirstPersonCharacter").GetComponent<PlayerDeathScript> ().playAnimDead ();
+
+			GetComponent<AudioSource> ().PlayOneShot (DeathSound);
+			transform.Find("FirstPersonCharacter").GetComponent<PlayerDeathScript> ().PlayAnimDead ();
 			GameObject.Find ("FPSController").GetComponent<CharacterController> ().enabled = false;
 			GameObject.Find ("Bloodblur").GetComponent<Image> ().enabled = true;
-			for (int i = 0; i < transform.childCount; i++) {
+
+			for (int i = 0; i < transform.childCount; i++)
+            {
 				transform.GetChild (i).gameObject.SetActive (false);
 			}
 
 			GameObject[] ennemies = GameObject.FindGameObjectsWithTag ("ennemy");
 
-			foreach (GameObject e in ennemies) {
+			foreach (GameObject e in ennemies)
+            {
 				e.GetComponent<AudioSource> ().enabled = false;
 			}
 
-			StartCoroutine (reloadScene ());
+			StartCoroutine (ReloadScene ());
 		}
 	}
 
-	IEnumerator reloadScene(){
+	IEnumerator ReloadScene()
+    {
 		yield return new WaitForSeconds (3f);
+
 		SceneManager.LoadScene ("Menu");
 	}
 
-	public void addHealth(int heal){
-		hp += heal;
-		GameObject.Find ("PanelUI").GetComponent<UIScript> ().UpdateLife (hp);
+	public void AddHealth(int heal)
+    {
+
+		Hp += heal;
+		GameObject.Find ("PanelUI").GetComponent<UIScript> ().UpdateLife (Hp);
+
 	}
 }

@@ -3,29 +3,34 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class KeyScript : MonoBehaviour {
+public class KeyScript : MonoBehaviour
+{
 
-	public AudioClip soundKey;
-	public int speed = 300;
+	public AudioClip SoundKey;
+	public int Speed = 300;
 
-	void OnTriggerEnter(Collider col){
-		if(col.gameObject.tag == "Player"){
+	void OnTriggerEnter(Collider col)
+    {
+		if(col.gameObject.tag == "Player")
+        {
 			
-			StartCoroutine (takeKey ());
+			StartCoroutine (TakeKey ());
 		}
 	}
 
-	void Update(){
-		transform.Rotate (Vector3.up * speed * Time.deltaTime);
+	void Update()
+    {
+		transform.Rotate (Vector3.up * Speed * Time.deltaTime);
 	}
 
-	IEnumerator takeKey(){
+	IEnumerator TakeKey()
+    {
 		
-		GetComponent<AudioSource> ().PlayOneShot (soundKey);
-		GameObject.Find ("CanvasMission").GetComponent<MissionScript> ().locked = false;
-		GameObject.Find ("CanvasMission").GetComponent<MissionScript> ().panelText.SetActive (true);
-		GameObject.Find ("CanvasMission").GetComponent<MissionScript> ().panelText.transform.Find ("Text").GetComponent<Text>().text = "FIND THE EXIT NOW";
-		GameObject.Find ("CanvasMission").GetComponent<MissionScript> ().hideTextPanel ();
+		GetComponent<AudioSource> ().PlayOneShot (SoundKey);
+		GameObject.Find ("CanvasMission").GetComponent<MissionScript> ().Locked = false;
+		GameObject.Find ("CanvasMission").GetComponent<MissionScript> ().PanelText.SetActive (true);
+		GameObject.Find ("CanvasMission").GetComponent<MissionScript> ().PanelText.transform.Find ("Text").GetComponent<Text>().text = "FIND THE EXIT NOW";
+		GameObject.Find ("CanvasMission").GetComponent<MissionScript> ().HideTextPanel ();
 		yield return new WaitForSeconds (0.5f);
 		Destroy (gameObject);
 

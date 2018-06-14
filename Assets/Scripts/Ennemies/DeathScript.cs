@@ -3,22 +3,28 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class DeathScript : MonoBehaviour {
+public class DeathScript : MonoBehaviour
+{
 
-	private Animator animator;
-	public GameObject ennemyAudio;
-	public AudioClip deathSound;
-	private bool dying = false;
-	public int hp = 100;
+	
+	public GameObject EnnemyAudio;
+	public AudioClip DeathSound;
+	public int Hp = 100;
 
-	// Use this for initialization
-	void Start () {
+    private bool dying = false;
+    private Animator animator;
+
+    // Use this for initialization
+    void Start ()
+    {
 		animator = GetComponent<Animator> ();
 	}
 	
 	// Update is called once per frame
-	void Update () {
-		if (dying){
+	void Update ()
+    {
+		if (dying)
+        {
 			float x, y;
 			x = GetComponent<CapsuleCollider> ().center.x;
 			y = GetComponent<CapsuleCollider> ().center.y;
@@ -27,24 +33,29 @@ public class DeathScript : MonoBehaviour {
 
 	}
 
-	public void death(int damages){
+	public void Death(int damages)
+    {
 		Debug.Log ("HIT");
-		if (hp <= 0) {
+		if (Hp <= 0)
+        {
 			Debug.Log ("KILL");
-			die ();
-		} else {
+			Die ();
+		}
+        else
+        {
 			Debug.Log("Damage");
-			hp -= damages;
-			ennemyAudio.GetComponent<AudioSource> ().PlayOneShot (deathSound);
+			Hp -= damages;
+			EnnemyAudio.GetComponent<AudioSource> ().PlayOneShot (DeathSound);
 		}
 
 	}
 
-	public void die(){
+	public void Die()
+    {
 		dying = true;
 		GetComponent<Rigidbody> ().isKinematic = false;
-		ennemyAudio.GetComponent<AudioSource> ().Stop ();
-		ennemyAudio.GetComponent<AudioSource> ().PlayOneShot (deathSound);
+		EnnemyAudio.GetComponent<AudioSource> ().Stop ();
+		EnnemyAudio.GetComponent<AudioSource> ().PlayOneShot (DeathSound);
 		animator.SetTrigger ("dead");
 		animator.SetBool ("attack", false);
 		GetComponent<IAParasite> ().enabled = false;
@@ -53,11 +64,13 @@ public class DeathScript : MonoBehaviour {
 		Destroy (gameObject, 10f);
 	}
 
-	public bool isDying(){
+	public bool IsDying()
+    {
 		return this.dying;
 	}
 
-	public void activationIsKinematic(){
+	public void ActivationIsKinematic()
+    {
 		GetComponent<Rigidbody> ().isKinematic = true;
 	}
 }

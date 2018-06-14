@@ -3,25 +3,25 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UIScript : MonoBehaviour {
+public class UIScript : MonoBehaviour
+{
 
-	public Text txtAmmos, txtMags, txtLife;
-	public Image imgLife;
+	public Text TxtAmmos, TxtMags, TxtLife;
+	public Image ImgLife;
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	public void UpdateTxtAmmunition(int ammos, int maxAmmos, int mags){
-		txtAmmos.text = "Ammos : " + ammos + "/" + maxAmmos;
-		txtMags.text = "Mags : " + mags;
+	public void UpdateTxtAmmunition(int ammos, int maxAmmos, int mags)
+    {
+
+		TxtAmmos.text = "Ammos : " + ammos + "/" + maxAmmos;
+		TxtMags.text = "Mags : " + mags;
 	}
 
-	public void UpdateLife(int hp){
+	public void UpdateLife(int hp)
+    {
+
 		hp = Mathf.Clamp (hp, 0, 100);
-		imgLife.fillAmount = ((float) hp) / 100;
-		txtLife.text = "HP " + hp + "%";
+		ImgLife.fillAmount = ((float) hp) / 100;
+		TxtLife.text = "HP " + hp + "%";
 	}
 
 }

@@ -2,16 +2,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerDeathScript : MonoBehaviour {
+public class PlayerDeathScript : MonoBehaviour
+{
 
-	Animator anim;
+	Animator Anim;
 
 	// Use this for initialization
-	void Start () {
-		anim = GetComponent<Animator> ();
+	void Start ()
+    {
+		Anim = GetComponent<Animator> ();
 	}
 	
-	public void playAnimDead(){
-		anim.enabled = true;
+	public void PlayAnimDead()
+    {
+		Anim.enabled = true;
 	}
 }
