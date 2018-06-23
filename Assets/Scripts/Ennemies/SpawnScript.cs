@@ -19,7 +19,8 @@ public class SpawnScript : MonoBehaviour
 		if (distance < DistanceSpawn && Time.time > nextSpawn)
         {
 			nextSpawn = Time.time + SpawnRate;
-			Instantiate (ObjectToSpawn, transform.position, Quaternion.identity);
+			GameObject zInstance = Instantiate (ObjectToSpawn, transform.position, Quaternion.identity);
+            zInstance.GetComponent<IAParasite>().DetectionDistance = 40;
 		}
 		
 	}
